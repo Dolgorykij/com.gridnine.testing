@@ -8,9 +8,11 @@ import com.gridnine.testing.service.Imlp.GroundTimeExceedsTwoHoursFlightFilterSe
 
 import java.util.List;
 
+/**
+ * Главный класс. Демонстрирует применение различных фильтров к списку рейсов.
+ */
 public class Main {
     public static void main(String[] args) {
-
         List<Flight> flights = FlightBuilder.createFlights();
 
         FlightFilterService departureFilter = new DepartureBeforeCurrentTimeFlightFilterService();
@@ -21,16 +23,12 @@ public class Main {
         List<Flight> filteredFlights2 = arrivalBeforeDepartureFilter.filter(flights);
         List<Flight> filteredFlights3 = groundTimeFilter.filter(flights);
 
-
         System.out.println("Все перелёты:");
         flights.forEach(System.out::println);
-
         System.out.println("Перелёты после фильтрации (исключены вылеты до текущего времени):");
         filteredFlights1.forEach(System.out::println);
-
         System.out.println("Перелёты после фильтрации (исключены сегменты с датой прилёта раньше даты вылета):");
         filteredFlights2.forEach(System.out::println);
-
         System.out.println("Перелёты после фильтрации (исключены перелёты с общим временем на земле более 2 часов):");
         filteredFlights3.forEach(System.out::println);
     }
