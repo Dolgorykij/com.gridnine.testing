@@ -9,8 +9,17 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
+/**
+ * Фильтр, исключающий рейсы с общим временем ожидания более двух часов.
+ */
 public class GroundTimeExceedsTwoHoursFlightFilterService implements FlightFilterService {
 
+    /**
+     * Возвращает список рейсов, у которых общее время на земле не превышает 2 часов.
+     *
+     * @param flights список всех рейсов
+     * @return отфильтрованный список рейсов
+     */
     @Override
     public List<Flight> filter(List<Flight> flights) {
         return flights.stream()
@@ -20,13 +29,13 @@ public class GroundTimeExceedsTwoHoursFlightFilterService implements FlightFilte
                         return true;
                     }
 
-                    long totalGroundTime = 0;
+                    long totalGroundMinutes = 0;
                     for (int i = 1; i < segments.size(); i++) {
                         LocalDateTime previousArrival = segments.get(i - 1).getArrivalDate();
                         LocalDateTime currentDeparture = segments.get(i).getDepartureDate();
-                        totalGroundTime += Duration.between(previousArrival, currentDeparture).toHours();
+                        totalGroundMinutes += Duration.between(previousArrival, currentDeparture).toMinutes();
                     }
-                    return totalGroundTime <= 2;
+                    return totalGroundMinutes <= 120;
                 })
                 .collect(Collectors.toList());
     }
